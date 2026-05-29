@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>REAPER HUNTER — Dev Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Syne:wght@400;700;800&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reaper_hunter.css">
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="logo" href="#hero">REAPER HUNTER</a>
+  <div class="nav-right">
+    <a href="#devlog">Dev Log</a>
+    <a href="#mechanics">Meccaniche</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#tech">Tech</a>
+  </div>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-stripe"></div>
+  <div class="hero-stripe"></div>
+
+  <div class="hero-inner">
+    <div class="hero-kicker">Diario di Sviluppo · Progetto Informatica 2025/2026</div>
+    <h1 class="hero-h1">
+      <span class="big-r">R</span>EAPER<br>HUNTER
+    </h1>
+    <p class="hero-sub">Uno sparatutto FPS a ondate con estetica PSX, sviluppato da zero in Unity 6 come progetto di informatica. Questo è il racconto di come è stato costruito.</p>
+    <div class="hero-tags">
+      <span class="tag hot">Unity 6</span>
+      <span class="tag hot">C# OOP</span>
+      <span class="tag">FPS</span>
+      <span class="tag">Wave Shooter</span>
+      <span class="tag">PSX Style</span>
+      <span class="tag">JSON Save</span>
+      <span class="tag">NavMesh AI</span>
+      <span class="tag">Object Pooling</span>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span class="hero-scroll-txt">↓ Scorri per leggere il dev log</span>
+    <div style="display:flex;gap:2rem">
+      <div class="hero-stat">Script: <span>12</span></div>
+      <div class="hero-stat">Nemici: <span>3 tipi</span></div>
+      <div class="hero-stat">Ondate: <span>∞</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ INTRO ═══════════════ -->
+<section id="intro" class="block">
+  <div class="wrap">
+    <div class="block-label">Overview</div>
+    <h2 class="block-title">Cos'è Reaper Hunter</h2>
+
+    <div class="intro-grid">
+      <div class="intro-text reveal">
+        <p>Reaper Hunter è il mio progetto di informatica: uno <strong>sparatutto in prima persona</strong> sviluppato completamente in Unity 6 usando C#. L'idea era semplice — un gioco a ondate dove il player affronta nemici sempre più numerosi e pericolosi.</p>
+        <p>Ho scelto lo stile grafico <strong>PSX anni '90</strong> ispirandomi a DOOM e ai primi Resident Evil: texture a bassa risoluzione, poligoni spigolosi, fog volumetrica e post-processing che emulano i limiti tecnici della PlayStation 1. Non una limitazione estetica — una scelta di stile.</p>
+        <p>Il gioco non è complicato. Ma costruirlo ha richiesto di applicare davvero i concetti di informatica: <strong>programmazione ad oggetti</strong>, <strong>algoritmi</strong>, <strong>salvataggio su file</strong> e <strong>ottimizzazione</strong>. Questo sito racconta come ci sono arrivato.</p>
+
+        <div class="entry-img-row single" style="margin-top:2rem">
+          <div class="img-placeholder ratio-16-9">
+            <span>Screenshot principale del gioco</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="intro-sidebar reveal d2">
+        <div class="sidebar-row">
+          <span class="sidebar-key">Titolo</span>
+          <span class="sidebar-val">Reaper Hunter</span>
+        </div>
+        <div class="sidebar-row">
+          <span class="sidebar-key">Genere</span>
+          <span class="sidebar-val">FPS · Wave Shooter</span>
+        </div>
+        <div class="sidebar-row">
+          <span class="sidebar-key">Engine</span>
+          <span class="sidebar-val">Unity 6 — URP</span>
+        </div>
+        <div class="sidebar-row">
+          <span class="sidebar-key">Linguaggio</span>
+          <span class="sidebar-val">C# · OOP</span>
+        </div>
+        <div class="sidebar-row">
+          <span class="sidebar-key">Salvataggio</span>
+          <span class="sidebar-val">JSON · System.IO</span>
+        </div>
+        <div class="sidebar-row">
+          <span class="sidebar-key">AI Nemici</span>
+          <span class="sidebar-val">NavMesh · A*</span>
+        </div>
+        <div class="sidebar-row">
+          <span class="sidebar-key">Ottimizzazione</span>
+          <span class="sidebar-val">Object Pooling</span>
+        </div>
+        <div class="sidebar-row">
+          <span class="sidebar-key">Stile grafico</span>
+          <span class="sidebar-val">PSX / Low-Poly Retro</span>
+        </div>
+        <div class="sidebar-row">
+          <span class="sidebar-key">Anno</span>
+          <span class="sidebar-val">2025 / 2026</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ DEV LOG ═══════════════ -->
+<section id="devlog" class="block">
+  <div class="wrap">
+    <div class="block-label">Diario di Bordo</div>
+    <h2 class="block-title">Come è stato costruito</h2>
+    <p class="block-intro">Settimana per settimana: decisioni, problemi incontrati e come li ho risolti.</p>
+
+    <div class="devlog-entries" style="margin-top:5rem">
+
+      <!-- ── ENTRY 1 ── -->
+      <div class="entry reveal">
+        <div class="entry-meta">
+          <span class="entry-week">Settimana 01</span>
+          <span class="entry-phase">Setup</span>
+        </div>
+        <h3 class="entry-title">Progetto Unity e struttura iniziale</h3>
+        <div class="entry-body">
+          <p>Ho creato il progetto su Unity 6 usando il template <strong>Universal Render Pipeline</strong>. La scelta URP è stata deliberata: volevo il controllo sul post-processing per replicare l'estetica PSX. Ho impostato la cartella degli script, importato la mappa e configurato il player base.</p>
+          <p>Il primo approccio al progetto è stato abbastanza caotico — mettevo script su script senza pensare all'architettura. Poi ho capito che avrei dovuto pianificare prima la struttura OOP.</p>
+
+          <div class="entry-img-row">
+            <div class="img-placeholder ratio-16-9">
+              <span>Unity Editor — Setup iniziale</span>
+            </div>
+            <div class="img-placeholder ratio-16-9">
+              <span>Struttura cartelle Assets</span>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="callout-box callout-bug">
+              <div class="callout-label">⚠ Problema</div>
+              <div class="callout-text">Unity entrava in <strong>Safe Mode</strong> appena aprivo il progetto — errori di compilazione a cascata perché gli script si referenziavano a vicenda con classi non ancora create.</div>
+            </div>
+            <div class="callout-box callout-fix">
+              <div class="callout-label">✓ Soluzione</div>
+              <div class="callout-text">Ho creato prima tutti i file <code>.cs</code> vuoti con il nome corretto, poi ho aggiunto il codice. Unity compila in ordine — le classi devono esistere prima di essere referenziate.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ENTRY 2 ── -->
+      <div class="entry reveal">
+        <div class="entry-meta">
+          <span class="entry-week">Settimana 02</span>
+          <span class="entry-phase">Movimento · Camera</span>
+        </div>
+        <h3 class="entry-title">Movimento FPS e MouseLook</h3>
+        <div class="entry-body">
+          <p>Il <strong>PlayerController</strong> gestisce il movimento WASD con il <code>CharacterController</code> di Unity, mentre il <strong>MouseLook</strong> ruota la camera in base al mouse. Il cursore viene bloccato al centro dello schermo durante il gioco.</p>
+
+          <div class="code-wrap">
+            <div class="code-bar">
+              <span class="code-file">PlayerController.cs</span>
+              <span class="code-tag">C# · Movimento</span>
+            </div>
+            <div class="code-body"><pre><span class="ck">public class</span> <span class="cc">PlayerController</span> : MonoBehaviour {
+    <span class="ck">private</span> <span class="cc">CharacterController</span> controller;
+    <span class="ck">public float</span> speed = <span class="cn">6f</span>;
+    <span class="ck">public float</span> gravity = <span class="cn">-9.81f</span>;
+    <span class="ck">private</span> Vector3 velocity;
+
+    <span class="cm">// Update viene chiamato ogni frame</span>
+    <span class="ck">void</span> <span class="cf">Update</span>() {
+        <span class="ck">float</span> x = Input.<span class="cf">GetAxis</span>(<span class="cs">"Horizontal"</span>);
+        <span class="ck">float</span> z = Input.<span class="cf">GetAxis</span>(<span class="cs">"Vertical"</span>);
+
+        Vector3 move = transform.right * x + transform.forward * z;
+        controller.<span class="cf">Move</span>(move * speed * Time.deltaTime);
+
+        <span class="cm">// Gravità simulata manualmente</span>
+        velocity.y += gravity * Time.deltaTime;
+        controller.<span class="cf">Move</span>(velocity * Time.deltaTime);
+    }
+}</pre></div>
+          </div>
+
+          <div class="entry-img-row single">
+            <div class="img-placeholder ratio-16-9">
+              <span>Test movimento player in scena</span>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="callout-box callout-bug">
+              <div class="callout-label">⚠ Problema</div>
+              <div class="callout-text">Il player cadeva attraverso il pavimento al primo playtest. La gravità non funzionava correttamente.</div>
+            </div>
+            <div class="callout-box callout-fix">
+              <div class="callout-label">✓ Soluzione</div>
+              <div class="callout-text">Aggiunto il reset di <code>velocity.y</code> quando <code>isGrounded == true</code>. Senza il reset, la velocità verticale si accumulava negativamente anche a terra.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ENTRY 3 ── -->
+      <div class="entry reveal">
+        <div class="entry-meta">
+          <span class="entry-week">Settimana 03</span>
+          <span class="entry-phase">OOP · Architettura</span>
+        </div>
+        <h3 class="entry-title">Struttura OOP: interfacce e classi astratte</h3>
+        <div class="entry-body">
+          <p>Questa è stata la parte più importante del progetto. Ho progettato la gerarchia delle classi applicando i principi OOP: <strong>interfaccia IDamageable</strong> come contratto, <strong>classe astratta EntitaBase</strong> come base comune, e due sottoclassi concrete: <strong>PlayerStats</strong> e <strong>NemicoAI</strong>.</p>
+
+          <div class="code-wrap">
+            <div class="code-bar">
+              <span class="code-file">IDamageable.cs — Interfaccia</span>
+              <span class="code-tag">Astrazione</span>
+            </div>
+            <div class="code-body"><pre><span class="cm">// Contratto: qualsiasi entità che può subire danno DEVE avere questi metodi</span>
+<span class="ck">public interface</span> <span class="cc">IDamageable</span> {
+    <span class="ck">float</span> CurrentHealth { <span class="ck">get</span>; }
+    <span class="ck">float</span> MaxHealth     { <span class="ck">get</span>; }
+    <span class="ck">bool</span>  IsDead        { <span class="ck">get</span>; }
+
+    <span class="ck">void</span> <span class="cf">TakeDamage</span>(<span class="ck">float</span> amount);
+    <span class="ck">void</span> <span class="cf">Die</span>();
+}</pre></div>
+          </div>
+
+          <div class="code-wrap">
+            <div class="code-bar">
+              <span class="code-file">EntitaBase.cs — Classe Astratta</span>
+              <span class="code-tag">Ereditarietà</span>
+            </div>
+            <div class="code-body"><pre><span class="cm">// Classe astratta: implementa IDamageable, codice comune a player e nemici</span>
+<span class="ck">public abstract class</span> <span class="cc">EntitaBase</span> : MonoBehaviour, <span class="cc">IDamageable</span> {
+
+    [SerializeField] <span class="ck">protected float</span> maxHealth = <span class="cn">100f</span>;
+    <span class="ck">protected float</span> currentHealth;
+    <span class="ck">protected bool</span>  isDead = <span class="ck">false</span>;
+
+    <span class="cm">// Proprietà pubbliche — incapsulamento</span>
+    <span class="ck">public float</span> CurrentHealth => currentHealth;
+    <span class="ck">public float</span> MaxHealth     => maxHealth;
+    <span class="ck">public bool</span>  IsDead        => isDead;
+
+    <span class="cm">// Logica comune scritta UNA sola volta (DRY)</span>
+    <span class="ck">public virtual void</span> <span class="cf">TakeDamage</span>(<span class="ck">float</span> amount) {
+        <span class="ck">if</span> (isDead) <span class="ck">return</span>;
+        currentHealth = Mathf.<span class="cf">Clamp</span>(currentHealth - amount, <span class="cn">0f</span>, maxHealth);
+        <span class="cf">OnDamageReceived</span>(amount);
+        <span class="ck">if</span> (currentHealth <= <span class="cn">0f</span>) <span class="cf">Die</span>();
+    }
+
+    <span class="cm">// Hook astratti — ogni sottoclasse decide cosa succede</span>
+    <span class="ck">protected abstract void</span> <span class="cf">OnDamageReceived</span>(<span class="ck">float</span> amount);
+    <span class="ck">protected abstract void</span> <span class="cf">OnDeath</span>();
+}</pre></div>
+          </div>
+
+          <div class="callout">
+            <div class="callout-box callout-solo">
+              <div class="callout-label">💡 Perché è utile</div>
+              <div class="callout-text">Il <code>WeaponController</code> quando spara chiama <code>TakeDamage()</code> su qualunque oggetto <code>IDamageable</code>. <strong>Non sa</strong> se sta colpendo il player o un nemico — funziona grazie al polimorfismo. Se in futuro aggiungo un terzo tipo di entità, non tocco il codice di sparo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ENTRY 4 ── -->
+      <div class="entry reveal">
+        <div class="entry-meta">
+          <span class="entry-week">Settimana 04</span>
+          <span class="entry-phase">Armi · Sparo</span>
+        </div>
+        <h3 class="entry-title">Sistema di sparo con Raycast</h3>
+        <div class="entry-body">
+          <p>Il sistema di sparo usa il <strong>Raycast hitscan</strong>: viene lanciato un raggio invisibile dal centro dello schermo verso la scena. Se tocca qualcosa con <code>IDamageable</code>, applica danno.</p>
+          <p>Le statistiche di ogni arma sono in un <strong>ScriptableObject WeaponData</strong> — un asset separato dal codice. Aggiungere una nuova arma significa creare un nuovo asset, senza toccare nessuno script.</p>
+
+          <div class="code-wrap">
+            <div class="code-bar">
+              <span class="code-file">WeaponController.cs — sparo hitscan</span>
+              <span class="code-tag">Raycast · Polimorfismo</span>
+            </div>
+            <div class="code-body"><pre><span class="ck">private void</span> <span class="cf">SparaRaycast</span>() {
+    <span class="cm">// Raggio dal centro esatto dello schermo</span>
+    Ray ray = playerCamera.<span class="cf">ScreenPointToRay</span>(
+        <span class="ck">new</span> Vector3(Screen.width / <span class="cn">2f</span>, Screen.height / <span class="cn">2f</span>)
+    );
+
+    <span class="ck">if</span> (Physics.<span class="cf">Raycast</span>(ray, <span class="ck">out</span> RaycastHit hit, ArmaCorrente.portata)) {
+
+        <span class="cm">// Polimorfismo: non importa chi è colpito</span>
+        hit.collider.<span class="cf">GetComponentInParent</span>&lt;<span class="cc">IDamageable</span>&gt;()
+            ?.<span class="cf">TakeDamage</span>(ArmaCorrente.danno);
+
+        <span class="cm">// Effetto visivo impatto</span>
+        <span class="ck">if</span> (ArmaCorrente.prefabImpatto != <span class="ck">null</span>) {
+            <span class="ck">var</span> imp = Instantiate(ArmaCorrente.prefabImpatto,
+                hit.point, Quaternion.<span class="cf">LookRotation</span>(hit.normal));
+            Destroy(imp, <span class="cn">2f</span>);
+        }
+    }
+}</pre></div>
+          </div>
+
+          <div class="entry-img-row">
+            <div class="img-placeholder ratio-16-9">
+              <span>Debug ray visualizzato in scena</span>
+            </div>
+            <div class="img-placeholder ratio-16-9">
+              <span>WeaponData Inspector — Pistola</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ENTRY 5 ── -->
+      <div class="entry reveal">
+        <div class="entry-meta">
+          <span class="entry-week">Settimana 05</span>
+          <span class="entry-phase">AI · NavMesh</span>
+        </div>
+        <h3 class="entry-title">Nemici con NavMesh e tre tipi distinti</h3>
+        <div class="entry-body">
+          <p>I nemici usano il <strong>NavMeshAgent</strong> di Unity per il pathfinding. Unity precalcola una "mappa di navigazione" (NavMesh) sulla geometria della scena, e i nemici la usano per trovare il percorso verso il player evitando ostacoli.</p>
+          <p>Ho creato tre varianti con un <strong>enum TipoNemico</strong> che modifica i valori base nel metodo Awake.</p>
+
+          <div class="code-wrap">
+            <div class="code-bar">
+              <span class="code-file">NemicoAI.cs — Logica di inseguimento</span>
+              <span class="code-tag">NavMesh · Ereditarietà</span>
+            </div>
+            <div class="code-body"><pre><span class="ck">public class</span> <span class="cc">NemicoAI</span> : <span class="cc">EntitaBase</span> {
+
+    <span class="ck">public enum</span> <span class="cc">TipoNemico</span> { Normale, Veloce, Tank }
+    [SerializeField] <span class="ck">private</span> <span class="cc">TipoNemico</span> tipo;
+
+    <span class="ck">void</span> <span class="cf">Update</span>() {
+        <span class="ck">float</span> dist = Vector3.<span class="cf">Distance</span>(transform.position, player.position);
+
+        <span class="ck">if</span>      (dist <= rangeAttacco) { agent.isStopped = <span class="ck">true</span>;  <span class="cf">TentaAttacco</span>(); }
+        <span class="ck">else if</span> (dist <= rangeVista)   { agent.isStopped = <span class="ck">false</span>; agent.<span class="cf">SetDestination</span>(player.position); }
+        <span class="ck">else</span>                           { agent.isStopped = <span class="ck">true</span>; }
+    }
+
+    <span class="cm">// Override del metodo astratto di EntitaBase</span>
+    <span class="ck">protected override void</span> <span class="cf">OnDeath</span>() {
+        PlayerStats.Instance?.<span class="cf">AddScore</span>(punteggio);
+        WaveManager.Instance?.<span class="cf">NemicoMorto</span>();
+        Destroy(gameObject, <span class="cn">3f</span>);
+    }
+}</pre></div>
+          </div>
+
+          <div class="entry-img-row">
+            <div class="img-placeholder ratio-16-9">
+              <span>NavMesh bake sulla mappa</span>
+            </div>
+            <div class="img-placeholder ratio-16-9">
+              <span>I tre tipi di nemici a confronto</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ENTRY 6 ── -->
+      <div class="entry reveal">
+        <div class="entry-meta">
+          <span class="entry-week">Settimana 06</span>
+          <span class="entry-phase">Ondate · Ottimizzazione</span>
+        </div>
+        <h3 class="entry-title">WaveManager e Object Pooling</h3>
+        <div class="entry-body">
+          <p>Il <strong>WaveManager</strong> gestisce le ondate. Ogni ondata ha un numero di nemici, quanti possono essere in scena contemporaneamente e l'intervallo di spawn. Dopo le ondate configurate, genera ondate procedurali infinite con difficoltà crescente.</p>
+          <p>Per ottimizzare ho usato l'<strong>Object Pooling</strong>: invece di creare e distruggere nemici continuamente (costoso per il Garbage Collector), li precario in una coda e li riutilizzo.</p>
+
+          <div class="code-wrap">
+            <div class="code-bar">
+              <span class="code-file">WaveManager.cs — Object Pool</span>
+              <span class="code-tag">Ottimizzazione · Queue</span>
+            </div>
+            <div class="code-body"><pre><span class="cm">// Pool: un dizionario di code per tipo di nemico</span>
+<span class="ck">private</span> Dictionary&lt;<span class="ck">string</span>, Queue&lt;GameObject&gt;&gt; pool = <span class="ck">new</span>();
+
+<span class="ck">void</span> <span class="cf">Awake</span>() {
+    <span class="cm">// Precario gli oggetti all'avvio — una volta sola</span>
+    <span class="cf">PrecaricaPool</span>(<span class="cs">"Normale"</span>, prefabNormale, <span class="cn">10</span>);
+    <span class="cf">PrecaricaPool</span>(<span class="cs">"Veloce"</span>,  prefabVeloce,  <span class="cn">5</span>);
+    <span class="cf">PrecaricaPool</span>(<span class="cs">"Tank"</span>,    prefabTank,    <span class="cn">3</span>);
+}
+
+<span class="cm">// Prende un nemico dalla coda: O(1), nessuna allocazione</span>
+<span class="ck">private</span> GameObject <span class="cf">PrendiDalPool</span>(<span class="ck">string</span> tipo) {
+    <span class="ck">if</span> (pool[tipo].Count > <span class="cn">0</span>) {
+        <span class="ck">var</span> obj = pool[tipo].<span class="cf">Dequeue</span>();
+        obj.<span class="cf">SetActive</span>(<span class="ck">true</span>);
+        <span class="ck">return</span> obj;
+    }
+    <span class="ck">return</span> Instantiate(prefab); <span class="cm">// fallback se pool è vuoto</span>
+}
+
+<span class="cm">// Restituisce al pool invece di Destroy: O(1)</span>
+<span class="ck">public void</span> <span class="cf">RitornaAlPool</span>(<span class="ck">string</span> tipo, GameObject go) {
+    go.<span class="cf">SetActive</span>(<span class="ck">false</span>);
+    pool[tipo].<span class="cf">Enqueue</span>(go);
+}</pre></div>
+          </div>
+
+          <div class="callout">
+            <div class="callout-box callout-bug">
+              <div class="callout-label">⚠ Problema</div>
+              <div class="callout-text">Alle ondate 5+ il gioco laggava durante lo spawn. <code>Instantiate()</code> chiamato molte volte in pochi frame causava picchi di CPU visibili nel Profiler.</div>
+            </div>
+            <div class="callout-box callout-fix">
+              <div class="callout-label">✓ Soluzione</div>
+              <div class="callout-text">Con il pool, la complessità dello spawn diventa <strong>O(1)</strong>. I nemici esistono già — vengono solo riattivati. Il lag è sparito completamente.</div>
+            </div>
+          </div>
+
+          <div class="entry-img-row single">
+            <div class="img-placeholder ratio-16-9">
+              <span>WaveManager Inspector configurato</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ENTRY 7 ── -->
+      <div class="entry reveal">
+        <div class="entry-meta">
+          <span class="entry-week">Settimana 07</span>
+          <span class="entry-phase">Salvataggio JSON</span>
+        </div>
+        <h3 class="entry-title">Save System con System.IO</h3>
+        <div class="entry-body">
+          <p>Ho implementato il salvataggio persistente con <strong>JSON</strong>. Il <code>SaveSystem</code> è una classe <strong>statica</strong> utility: non ha istanze, espone solo metodi statici. Usa <code>JsonUtility</code> di Unity per serializzare i dati e <code>System.IO.File</code> per scrivere su disco.</p>
+
+          <div class="code-wrap">
+            <div class="code-bar">
+              <span class="code-file">SaveSystem.cs — Scrittura e lettura JSON</span>
+              <span class="code-tag">System.IO · Serializzazione</span>
+            </div>
+            <div class="code-body"><pre>[System.<span class="cc">Serializable</span>]
+<span class="ck">public class</span> <span class="cc">DatiPartita</span> {
+    <span class="ck">public int</span>    punteggio;
+    <span class="ck">public int</span>    ondataRaggiunta;
+    <span class="ck">public int</span>    nemiciUccisi;
+    <span class="ck">public float</span>  tempoGiocato;
+    <span class="ck">public string</span> dataOra;
+}
+
+<span class="ck">public static void</span> <span class="cf">SalvaPartita</span>() {
+    <span class="ck">var</span> data = <span class="ck">new</span> <span class="cc">DatiPartita</span> {
+        punteggio       = PlayerStats.Instance.Score,
+        ondataRaggiunta = WaveManager.Instance.OndataCorrente,
+        nemiciUccisi    = PlayerStats.Instance.KillCount,
+        tempoGiocato    = Time.timeSinceLevelLoad,
+        dataOra         = DateTime.Now.<span class="cf">ToString</span>(<span class="cs">"dd/MM/yyyy HH:mm"</span>)
+    };
+    <span class="cm">// Serializza in JSON e scrive su file</span>
+    <span class="ck">string</span> json = JsonUtility.<span class="cf">ToJson</span>(data, prettyPrint: <span class="ck">true</span>);
+    File.<span class="cf">WriteAllText</span>(SavePath, json);
+}</pre></div>
+          </div>
+
+          <div class="code-wrap">
+            <div class="code-bar">
+              <span class="code-file">savegame.json — esempio output</span>
+              <span class="code-tag">JSON</span>
+            </div>
+            <div class="code-body"><pre><span class="co">{</span>
+    <span class="cp">"punteggio"</span><span class="co">: 4750,</span>
+    <span class="cp">"ondataRaggiunta"</span><span class="co">: 3,</span>
+    <span class="cp">"nemiciUccisi"</span><span class="co">: 19,</span>
+    <span class="cp">"tempoGiocato"</span><span class="co">: 284.5,</span>
+    <span class="cp">"dataOra"</span><span class="co">: </span><span class="cs">"11/05/2026 16:48"</span>
+<span class="co">}</span></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── ENTRY 8 ── -->
+      <div class="entry reveal">
+        <div class="entry-meta">
+          <span class="entry-week">Settimana 08</span>
+          <span class="entry-phase">UI · Post-Processing</span>
+        </div>
+        <h3 class="entry-title">HUD, menu e estetica PSX</h3>
+        <div class="entry-body">
+          <p>Ho costruito l'interfaccia completa con <strong>TextMeshPro</strong> in font monospaziato, colori angolari e nessuna barra della vita — solo numeri. Lo stile PSX richiede meno è più.</p>
+          <p>Per il post-processing ho usato il Volume URP: <strong>Fog</strong> per l'atmosfera, <strong>Film Grain</strong> per il rumore tipico PSX, <strong>Vignette</strong> e <strong>Color Adjustments</strong> per il contrasto scuro.</p>
+
+          <div class="entry-img-row triple">
+            <div class="img-placeholder ratio-16-9">
+              <span>HUD in-game</span>
+            </div>
+            <div class="img-placeholder ratio-16-9">
+              <span>Menu principale</span>
+            </div>
+            <div class="img-placeholder ratio-16-9">
+              <span>Confronto senza/con post-processing</span>
+            </div>
+          </div>
+
+          <div class="callout">
+            <div class="callout-box callout-solo">
+              <div class="callout-label">💡 Nota sul Safe Mode</div>
+              <div class="callout-text">Ho passato un po' di tempo bloccato in Safe Mode per errori su <code>HUDManager</code> — lo script era referenziato da <code>PlayerStats</code> e <code>WeaponController</code> ma non esisteva ancora. <strong>Lezione imparata:</strong> creare sempre prima i file vuoti di tutti gli script che si useranno, poi riempirli.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /devlog-entries -->
+  </div>
+</section>
+
+<!-- ═══════════════ MECCANICHE ═══════════════ -->
+<section id="mechanics" class="block">
+  <div class="wrap">
+    <div class="block-label">Meccaniche</div>
+    <h2 class="block-title">Come funziona il gioco</h2>
+    <p class="block-intro">Le principali meccaniche implementate e come sono state realizzate tecnicamente.</p>
+
+    <div class="mech-grid reveal" style="margin-top:4rem">
+
+      <div class="mech-card">
+        <div class="mech-num">01</div>
+        <div class="mech-title">Sparo Hitscan</div>
+        <p class="mech-desc">Raycast istantaneo dal centro camera. Nessun proiettile fisico — il colpo arriva subito. Rileva IDamageable e applica danno via polimorfismo.</p>
+        <div class="mech-code">Physics.Raycast(ray, hit, portata)<br>→ IDamageable.TakeDamage(danno)</div>
+      </div>
+
+      <div class="mech-card">
+        <div class="mech-num">02</div>
+        <div class="mech-title">Ricarica Coroutine</div>
+        <p class="mech-desc">La ricarica usa una Coroutine: attende N secondi, poi aggiorna le munizioni. Nel frattempo blocca altri spari con un flag booleano.</p>
+        <div class="mech-code">IEnumerator Ricarica()<br>yield return WaitForSeconds(t)</div>
+      </div>
+
+      <div class="mech-card">
+        <div class="mech-num">03</div>
+        <div class="mech-title">AI con NavMesh</div>
+        <p class="mech-desc">Pathfinding A* precalcolato. Tre stati: pattuglia (fermo), inseguimento (SetDestination), attacco (TakeDamage sul player).</p>
+        <div class="mech-code">agent.SetDestination(player.position)<br>← aggiornato ogni frame</div>
+      </div>
+
+      <div class="mech-card">
+        <div class="mech-num">04</div>
+        <div class="mech-title">Ondate Infinite</div>
+        <p class="mech-desc">Ondate configurate manualmente più generazione procedurale. Difficoltà crescente: più nemici, più veloci, meno pausa tra spawn.</p>
+        <div class="mech-code">nemiciTotali = 5 + idx * 3<br>intervalloSpawn = max(0.5, 2 - idx*0.1)</div>
+      </div>
+
+      <div class="mech-card">
+        <div class="mech-num">05</div>
+        <div class="mech-title">Object Pooling</div>
+        <p class="mech-desc">Pool di nemici pre-istanziati. SetActive(true/false) invece di Instantiate/Destroy. Eliminato completamente il lag durante lo spawn.</p>
+        <div class="mech-code">Queue&lt;GameObject&gt; pool<br>Dequeue() → O(1) spawn</div>
+      </div>
+
+      <div class="mech-card">
+        <div class="mech-num">06</div>
+        <div class="mech-title">Salvataggio JSON</div>
+        <p class="mech-desc">Salvataggio automatico a fine ondata. Dati serializzati con JsonUtility e scritti su file con System.IO. Lettura all'avvio per mostrare il record.</p>
+        <div class="mech-code">JsonUtility.ToJson(data)<br>File.WriteAllText(path, json)</div>
+      </div>
+
+      <div class="mech-card">
+        <div class="mech-num">07</div>
+        <div class="mech-title">Cambio Armi</div>
+        <p class="mech-desc">Lista di WeaponData ScriptableObject. Scrollwheel o tasti 1-2 per cambiare. Ogni arma ha danno, cadenza, caricatore e suoni separati.</p>
+        <div class="mech-code">List&lt;WeaponData&gt; armiData<br>indiceArma = (i+dir) % count</div>
+      </div>
+
+      <div class="mech-card">
+        <div class="mech-num">08</div>
+        <div class="mech-title">Sistema Vita OOP</div>
+        <p class="mech-desc">IDamageable + EntitaBase gestisce vita per player e nemici con codice condiviso. TakeDamage, Die, Heal implementati una volta sola.</p>
+        <div class="mech-code">EntitaBase.TakeDamage()<br>→ abstract OnDeath()</div>
+      </div>
+
+      <div class="mech-card">
+        <div class="mech-num">09</div>
+        <div class="mech-title">Post-Processing PSX</div>
+        <p class="mech-desc">Volume URP con Fog, Film Grain, Vignette e Color Adjustments. Shader retro low-poly per texture pixelate tipiche della PlayStation 1.</p>
+        <div class="mech-code">URP Volume Profile<br>+ Retro 3D Shader Pack</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ GALLERY ═══════════════ -->
+<section id="gallery" class="block">
+  <div class="wrap">
+    <div class="block-label">Screenshot</div>
+    <h2 class="block-title">Il gioco in azione</h2>
+
+    <div class="gallery-grid reveal" style="margin-top:4rem">
+      <div class="gallery-cell tall">
+        <div class="img-placeholder" style="height:100%;min-height:400px">
+          <span>Gameplay principale — HUD + nemici</span>
+        </div>
+        <div class="gallery-cap">
+          <div class="gallery-cap-title">Vista FP con HUD</div>
+        </div>
+      </div>
+      <div class="gallery-cell">
+        <div class="img-placeholder ratio-16-9">
+          <span>Ondata con molti nemici</span>
+        </div>
+        <div class="gallery-cap">
+          <div class="gallery-cap-title">Ondata avanzata</div>
+        </div>
+      </div>
+      <div class="gallery-cell">
+        <div class="img-placeholder ratio-16-9">
+          <span>Unity Editor — script e gerarchia</span>
+        </div>
+        <div class="gallery-cap">
+          <div class="gallery-cap-title">Editor durante lo sviluppo</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="entry-img-row" style="margin-top:1px;background:var(--line);gap:1px">
+      <div class="gallery-cell">
+        <div class="img-placeholder ratio-16-9">
+          <span>Menu principale</span>
+        </div>
+        <div class="gallery-cap"><div class="gallery-cap-title">Main Menu</div></div>
+      </div>
+      <div class="gallery-cell">
+        <div class="img-placeholder ratio-16-9">
+          <span>Schermata Game Over</span>
+        </div>
+        <div class="gallery-cap"><div class="gallery-cap-title">Game Over Screen</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ TECH TABLE ═══════════════ -->
+<section id="tech" class="block">
+  <div class="wrap">
+    <div class="block-label">Stack</div>
+    <h2 class="block-title">Tecnologie usate</h2>
+
+    <table class="tech-table reveal" style="margin-top:3rem">
+      <thead>
+        <tr>
+          <th>Tool / Tecnologia</th>
+          <th>Perché è stata usata</th>
+          <th>Categoria</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><div class="tech-name">Unity 6</div></td>
+          <td><div class="tech-why">Game engine principale. URP per il controllo sul rendering e post-processing PSX.</div></td>
+          <td><span class="tech-badge badge-red">Engine</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">C# · OOP</div></td>
+          <td><div class="tech-why">Linguaggio del progetto. Applicato con interfacce, classi astratte, ereditarietà e polimorfismo.</div></td>
+          <td><span class="tech-badge badge-red">Linguaggio</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">NavMesh</div></td>
+          <td><div class="tech-why">Pathfinding A* precalcolato per i nemici. Permette inseguimento intelligente senza scrivere algoritmi di ricerca.</div></td>
+          <td><span class="tech-badge badge-ice">AI</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">System.IO + JSON</div></td>
+          <td><div class="tech-why">Lettura e scrittura del file di salvataggio su disco. JsonUtility serializza i dati in formato testuale leggibile.</div></td>
+          <td><span class="tech-badge badge-amber">Persistenza</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">ScriptableObject</div></td>
+          <td><div class="tech-why">WeaponData: dati arma separati dalla logica. Pattern Composizione — aggiungere armi senza toccare il codice.</div></td>
+          <td><span class="tech-badge badge-ice">Pattern</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">Object Pooling</div></td>
+          <td><div class="tech-why">Queue&lt;GameObject&gt; per riuso nemici. Elimina lag da Instantiate/Destroy. Complessità spawn O(1).</div></td>
+          <td><span class="tech-badge badge-amber">Ottimizzazione</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">URP Post-Processing</div></td>
+          <td><div class="tech-why">Fog, Film Grain, Vignette, Color Adjustments. Tutto il look PSX è ottenuto qui senza modificare le mesh.</div></td>
+          <td><span class="tech-badge badge-ice">Grafica</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">Mixamo</div></td>
+          <td><div class="tech-why">Animazioni FPS realistiche gratuite. Rifle idle, fire, reload scaricati come FBX for Unity con rig Humanoid.</div></td>
+          <td><span class="tech-badge badge-amber">Asset</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">TextMeshPro</div></td>
+          <td><div class="tech-why">Rendering testo UI ad alta qualità. HUD con font monospaziato per lo stile retrò del gioco.</div></td>
+          <td><span class="tech-badge badge-ice">UI</span></td>
+        </tr>
+        <tr>
+          <td><div class="tech-name">Visual Studio Code</div></td>
+          <td><div class="tech-why">IDE per C#. Integrazione diretta con Unity, IntelliSense e debugging.</div></td>
+          <td><span class="tech-badge badge-amber">Dev Tool</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════ LESSONS ═══════════════ -->
+<section id="lessons" class="block">
+  <div class="wrap">
+    <div class="block-label">Riflessioni</div>
+    <h2 class="block-title">Cosa ho imparato</h2>
+    <p class="block-intro">I takeaway più importanti di questo progetto.</p>
+
+    <div class="lessons-grid" style="margin-top:4rem">
+
+      <div class="lesson reveal">
+        <div class="lesson-num">LEZIONE 01</div>
+        <h3>Pianifica l'OOP prima di scrivere codice</h3>
+        <p>Ho riscritto tre volte i sistemi vita e punteggio perché non avevo pianificato la gerarchia. Quando ho disegnato su carta la struttura IDamageable → EntitaBase → sottoclassi, tutto è diventato molto più chiaro.</p>
+        <p><strong>Takeaway:</strong> 20 minuti di progettazione OOP risparmiano ore di refactoring.</p>
+      </div>
+
+      <div class="lesson reveal d1">
+        <div class="lesson-num">LEZIONE 02</div>
+        <h3>Il Safe Mode non è un problema — è un aiuto</h3>
+        <p>Inizialmente mi spaventava vedere Unity in Safe Mode. Poi ho capito che la console mostra esattamente dove è l'errore e quale classe manca. Leggere il messaggio invece di farsi prendere dal panico è tutto.</p>
+        <p><strong>Takeaway:</strong> L'errore ti dice sempre cosa fare — bisogna solo leggerlo.</p>
+      </div>
+
+      <div class="lesson reveal">
+        <div class="lesson-num">LEZIONE 03</div>
+        <h3>Object Pooling fa una differenza enorme</h3>
+        <p>Il lag durante le ondate sembrava impossibile da risolvere. Poi ho capito che <code>Instantiate()</code> è costoso. Con il pool, i nemici esistono già — vengono solo riattivati. Il gioco è diventato fluido immediatamente.</p>
+        <p><strong>Takeaway:</strong> L'ottimizzazione non è optional — è parte del design.</p>
+      </div>
+
+      <div class="lesson reveal d1">
+        <div class="lesson-num">LEZIONE 04</div>
+        <h3>ScriptableObject separa dati da codice</h3>
+        <p>Mettere le statistiche delle armi in uno ScriptableObject è stata una delle decisioni migliori. Modificare il danno della pistola non richiede di aprire un file C# — basta cambiare il valore nell'asset.</p>
+        <p><strong>Takeaway:</strong> Dati configurabili fuori dal codice = progetto molto più flessibile.</p>
+      </div>
+
+      <div class="lesson reveal">
+        <div class="lesson-num">LEZIONE 05</div>
+        <h3>Il JSON è semplice e potente</h3>
+        <p>Implementare il salvataggio sembrava complicato. In realtà con <code>JsonUtility.ToJson()</code> e <code>File.WriteAllText()</code> bastano 5 righe. Il file è leggibile anche con un editor di testo.</p>
+        <p><strong>Takeaway:</strong> Lettura e scrittura su file sono molto più accessibili di quanto sembri.</p>
+      </div>
+
+      <div class="lesson reveal d1">
+        <div class="lesson-num">LEZIONE 06</div>
+        <h3>Lo stile visivo semplifica tutto</h3>
+        <p>Scegliere lo stile PSX low-poly ha eliminato metà dei problemi grafici. Non servivano texture ad alta risoluzione, animazioni complesse o modelli dettagliati — la semplicità era l'obiettivo.</p>
+        <p><strong>Takeaway:</strong> Una scelta estetica coerente guida le decisioni tecniche e le semplifica.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="footer-logo">REAPER HUNTER</div>
+  <div class="footer-info">
+    Progetto di Informatica — Anno Scolastico 2025/2026<br>
+    Sviluppato in Unity 6 con C# · OOP · JSON · NavMesh
+  </div>
+  <div class="footer-stack">
+    Unity 6 · C# · URP<br>
+    NavMesh · Object Pooling · JSON
+  </div>
+</footer>
+
+<script>
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
